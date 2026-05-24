@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <pthread.h>
+#include <time.h>
 
 pthread_mutex_t mutex;
 pthread_cond_t cond;
@@ -50,19 +51,22 @@ int main()
 {
     pthread_t thread1, thread2[2];
 
-    pthread_mutex_init(&mutex, NULL);
-    pthread_cond_init(&cond, NULL);
+    pthread_mutex_init (&mutex, NULL);
+    pthread_cond_init (&cond, NULL);
     
-    pthread_create(&thread1, NULL, fuelfilling, NULL);
+    pthread_create (&thread1, NULL, fuelfilling, NULL);
     sleep(2);
     for(int i = 0; i < 2; i++){
-        pthread_create(&thread2[i], NULL, watingcars, NULL);
+        pthread_create (&thread2[i], NULL, watingcars, NULL);
     }
 
-    pthread_join(thread1, NULL);
+    pthread_join (thread1, NULL);
     for(int i = 0; i < 2; i++){
         pthread_join(thread2[i], NULL);
     }
+
+    pthread_mutex_destroy (&mutex);
+    pthread_cond_destroy (&cond);
 
     return 0;
 }
